@@ -24,8 +24,16 @@ namespace SpaceInvader
                 System.Threading.Thread.Sleep(20);
             }
             */
-            ConsoleKey myKey = Console.ReadKey(true).Key;
+
+            while (true)
+            {
+                myEnemyUfo1.Draw();
+                myEnemyUfo2.Draw();
+                System.Threading.Thread.Sleep(1);
+            }
             //char key = 'i';
+            /*
+            ConsoleKey myKey = Console.ReadKey(true).Key;
             do
             {
                 while (!Console.KeyAvailable)
@@ -35,7 +43,7 @@ namespace SpaceInvader
                     System.Threading.Thread.Sleep(1);
                 }
             } while (myKey != ConsoleKey.Escape);
-
+            */
         }
     }
 }
