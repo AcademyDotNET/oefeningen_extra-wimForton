@@ -13,6 +13,7 @@ namespace SpaceInvader
         {
             Console.CursorVisible = false;
             EnemyUfo myEnemyUfo1 = new EnemyUfo();
+            EnemyUfo myEnemyUfo2 = new EnemyUfo();
             Rocket myRocket1 = new Rocket();
             Rocket myRocket2 = new Rocket();
             int test = 0;
@@ -30,6 +31,7 @@ namespace SpaceInvader
                 while (!Console.KeyAvailable)
                 {
                     myEnemyUfo1.Draw();
+                    myEnemyUfo2.Draw();
                     System.Threading.Thread.Sleep(1);
                 }
             } while (myKey != ConsoleKey.Escape);
