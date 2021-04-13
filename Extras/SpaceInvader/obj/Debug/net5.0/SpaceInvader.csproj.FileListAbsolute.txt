@@ -1,0 +1,16 @@
+H:\cursus_informatica\extras\Extras\SpaceInvader\bin\Debug\net5.0\SpaceInvader.exe
+H:\cursus_informatica\extras\Extras\SpaceInvader\bin\Debug\net5.0\SpaceInvader.deps.json
+H:\cursus_informatica\extras\Extras\SpaceInvader\bin\Debug\net5.0\SpaceInvader.runtimeconfig.json
+H:\cursus_informatica\extras\Extras\SpaceInvader\bin\Debug\net5.0\SpaceInvader.runtimeconfig.dev.json
+H:\cursus_informatica\extras\Extras\SpaceInvader\bin\Debug\net5.0\SpaceInvader.dll
+H:\cursus_informatica\extras\Extras\SpaceInvader\bin\Debug\net5.0\ref\SpaceInvader.dll
+H:\cursus_informatica\extras\Extras\SpaceInvader\bin\Debug\net5.0\SpaceInvader.pdb
+H:\cursus_informatica\extras\Extras\SpaceInvader\obj\Debug\net5.0\SpaceInvader.csprojAssemblyReference.cache
+H:\cursus_informatica\extras\Extras\SpaceInvader\obj\Debug\net5.0\SpaceInvader.GeneratedMSBuildEditorConfig.editorconfig
+H:\cursus_informatica\extras\Extras\SpaceInvader\obj\Debug\net5.0\SpaceInvader.AssemblyInfoInputs.cache
+H:\cursus_informatica\extras\Extras\SpaceInvader\obj\Debug\net5.0\SpaceInvader.AssemblyInfo.cs
+H:\cursus_informatica\extras\Extras\SpaceInvader\obj\Debug\net5.0\SpaceInvader.csproj.CoreCompileInputs.cache
+H:\cursus_informatica\extras\Extras\SpaceInvader\obj\Debug\net5.0\SpaceInvader.dll
+H:\cursus_informatica\extras\Extras\SpaceInvader\obj\Debug\net5.0\ref\SpaceInvader.dll
+H:\cursus_informatica\extras\Extras\SpaceInvader\obj\Debug\net5.0\SpaceInvader.pdb
+H:\cursus_informatica\extras\Extras\SpaceInvader\obj\Debug\net5.0\SpaceInvader.genruntimeconfig.cache
