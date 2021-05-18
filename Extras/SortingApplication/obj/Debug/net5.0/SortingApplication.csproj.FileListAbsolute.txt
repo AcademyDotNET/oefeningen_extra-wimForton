@@ -1,0 +1,16 @@
+H:\cursus_informatica\StrategyPattern\SortingApplication\SortingApplication\bin\Debug\net5.0\SortingApplication.exe
+H:\cursus_informatica\StrategyPattern\SortingApplication\SortingApplication\bin\Debug\net5.0\SortingApplication.deps.json
+H:\cursus_informatica\StrategyPattern\SortingApplication\SortingApplication\bin\Debug\net5.0\SortingApplication.runtimeconfig.json
+H:\cursus_informatica\StrategyPattern\SortingApplication\SortingApplication\bin\Debug\net5.0\SortingApplication.runtimeconfig.dev.json
+H:\cursus_informatica\StrategyPattern\SortingApplication\SortingApplication\bin\Debug\net5.0\SortingApplication.dll
+H:\cursus_informatica\StrategyPattern\SortingApplication\SortingApplication\bin\Debug\net5.0\ref\SortingApplication.dll
+H:\cursus_informatica\StrategyPattern\SortingApplication\SortingApplication\bin\Debug\net5.0\SortingApplication.pdb
+H:\cursus_informatica\StrategyPattern\SortingApplication\SortingApplication\obj\Debug\net5.0\SortingApplication.csprojAssemblyReference.cache
+H:\cursus_informatica\StrategyPattern\SortingApplication\SortingApplication\obj\Debug\net5.0\SortingApplication.GeneratedMSBuildEditorConfig.editorconfig
+H:\cursus_informatica\StrategyPattern\SortingApplication\SortingApplication\obj\Debug\net5.0\SortingApplication.AssemblyInfoInputs.cache
+H:\cursus_informatica\StrategyPattern\SortingApplication\SortingApplication\obj\Debug\net5.0\SortingApplication.AssemblyInfo.cs
+H:\cursus_informatica\StrategyPattern\SortingApplication\SortingApplication\obj\Debug\net5.0\SortingApplication.csproj.CoreCompileInputs.cache
+H:\cursus_informatica\StrategyPattern\SortingApplication\SortingApplication\obj\Debug\net5.0\SortingApplication.dll
+H:\cursus_informatica\StrategyPattern\SortingApplication\SortingApplication\obj\Debug\net5.0\ref\SortingApplication.dll
+H:\cursus_informatica\StrategyPattern\SortingApplication\SortingApplication\obj\Debug\net5.0\SortingApplication.pdb
+H:\cursus_informatica\StrategyPattern\SortingApplication\SortingApplication\obj\Debug\net5.0\SortingApplication.genruntimeconfig.cache
