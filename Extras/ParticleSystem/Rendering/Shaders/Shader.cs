@@ -6,20 +6,42 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GLFW;
-using static Glfw3Dapp.OpenGL.GL;
+using static ParticleSystem.OpenGL.GL;
 
-namespace Glfw3Dapp.Rendering.Shaders
+namespace ParticleSystem
 {
     class Shader
     {
-        string vertexCode;
-        string fragmentCode;
+        private string vertexCode;
+        private string fragmentCode;
         public uint ProgramID { get; set; }
 
-        public Shader(string inVertexCode, string inFragmentCode)
+        public Shader()
         {
-            vertexCode = inVertexCode;
-            fragmentCode = inFragmentCode;
+            vertexCode =    @"#version 330 core
+                            layout (location = 0) in vec3 aPosition;
+                            layout (location = 1) in vec3 aColor;
+                            out vec4 vertexColor;
+                            uniform mat4 projection;
+                            uniform mat4 model;
+                            uniform mat4 modelMatrix;
+                                    
+                            void main()
+                            {
+                                vertexColor = vec4(aColor.rgb, 1.0);
+                                //modelMatrix = model * vec4(aPosition, 1.0);
+                                //gl_Position = model * vec4(aPosition, 1.0);
+                                gl_Position = projection * vec4(aPosition, 1.0);
+                            }";
+
+            fragmentCode =  @"#version 330 core
+                            out vec4 FragColor;
+                            in vec4 vertexColor;
+                                        
+                            void main()
+                            {
+                                FragColor = vertexColor;
+                            }";
         }
         public void Load()
         {

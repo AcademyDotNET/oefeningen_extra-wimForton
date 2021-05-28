@@ -50,7 +50,8 @@ namespace ParticleSystem
             double interpolation = (double)id / (double)ParticleMaxAmount;
             inParticle.Pos = Vector.Lerp(StartPos, EndPos, interpolation);
             inParticle.PrevPos = inParticle.Pos;
-            inParticle.RGB = new Vector((int)(myRandom.NextDouble() * 255), (int)(myRandom.NextDouble() * 20), (int)(myRandom.NextDouble() * 255));
+            inParticle.RGB = new Vector(myRandom.NextDouble(), myRandom.NextDouble(), myRandom.NextDouble());
+            inParticle.Size = 0.2;
             if (id == 0 || id == ParticleMaxAmount - 1)
             {
                 inParticle.Fix = true;

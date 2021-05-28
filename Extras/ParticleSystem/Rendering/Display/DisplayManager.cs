@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static Glfw3Dapp.OpenGL.GL;
+using static ParticleSystem.OpenGL.GL;
 
-namespace Glfw3Dapp.Rendering.Display
+namespace ParticleSystem
 {
     class DisplayManager
     {

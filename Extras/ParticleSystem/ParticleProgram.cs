@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Threading.Tasks;
-using Glfw3Dapp.GameLoop;
 
 
 
@@ -16,7 +15,9 @@ namespace ParticleSystem
             //PlayParticles();
             //PlayParticleFactory();
             //TestStuff();
-            Game game = new TestGame(800, 600, "myTestGame");
+
+            List<ParticleSystems> myScene = LoadScene();
+            Game game = new RenderOpenGl3DObject(myScene, 1024, 600, "WindowTitle");
             game.Run();
         }
 
@@ -35,7 +36,6 @@ namespace ParticleSystem
             //Console.WriteLine(test < test2);
             //Console.WriteLine(test >= test2);
         }
-
         private static void PlayParticleFactory()
         {
             /*
@@ -65,9 +65,16 @@ namespace ParticleSystem
 
             //Console.WriteLine($"You've build a {myParticle.GetType().Name}");
         }
-
-        private static void PlayParticles()
+        private static List<ParticleSystems> LoadScene()
         {
+            List<ParticleSystems> myParticleSystems = new List<ParticleSystems>();
+            myParticleSystems.Add(new ParticleEmitter("EmitterA", 100, Vector.setNew(10, 16, 5), 0.1, 0.08, 0.99, true));
+            myParticleSystems.Add(new ParticleTensionLine("RopeA", 30, Vector.setNew(-5, 0, -30), Vector.setNew(5, 0, -30), 1.0, -0.00002, 0.993));
+            myParticleSystems.Add(new ParticleTensionLine("RopeB", 50, Vector.setNew(10, 16, 0), Vector.setNew(20, 10, 20), 1.0, 0.004, 0.986));
+            return myParticleSystems;
+        }
+        private static void PlayParticles()
+        {/*
             //Console.SetWindowSize(100, 50);
             int counter = 0;
             int frameNumber = 0;
@@ -106,7 +113,7 @@ namespace ParticleSystem
                 {
                     myParticleSystems[i].UpdateParticles();
                 }
-            }
+            }*/
         }
     }
 }

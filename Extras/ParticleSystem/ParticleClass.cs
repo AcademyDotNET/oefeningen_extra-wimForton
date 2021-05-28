@@ -23,7 +23,7 @@ namespace ParticleSystem
         public double Age { get; set; }
         public double Lifespan { get; set; }
         public bool Fix { get; set; }
-        public Particle(int inParticleId = 0, int inParticleInstance = 0, Vector inPos = null, Vector inRot = null, Vector inVel = null, Vector inRGB = null, double inSize = 1.0, double inMass = 1.0, double inDrag = 0.999, double inSpan = 2.0, List<int> inConstraintNB = null, List<double> inRestLengths = null)
+        public Particle(int inParticleId = 0, int inParticleInstance = 0, Vector inPos = null, Vector inRot = null, Vector inVel = null, Vector inRGB = null, double inSize = 1, double inMass = 1.0, double inDrag = 0.999, double inSpan = 2.0, List<int> inConstraintNB = null, List<double> inRestLengths = null)
         {
             ParticleId = inParticleId;
             ParticleInstance = inParticleInstance;

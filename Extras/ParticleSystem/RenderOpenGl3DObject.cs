@@ -6,7 +6,7 @@ using static ParticleSystem.OpenGL.GL;
 
 namespace ParticleSystem
 {
-    class TestGame : Game
+    class RenderOpenGl3DObject : Game
     {
         uint vao;
         uint vbo;
@@ -15,16 +15,16 @@ namespace ParticleSystem
         Shader shader;
 
         Camera3D cam;
-        public TestGame(int initialWindowWidth, int initialWindowHeight, string initialWindowTitle) : base(initialWindowWidth, initialWindowHeight, initialWindowTitle)
+        public RenderOpenGl3DObject(List<ParticleSystems> inParticleSystems, int initialWindowWidth, int initialWindowHeight, string initialWindowTitle) : base(initialWindowWidth, initialWindowHeight, initialWindowTitle)
         {
-            
+            myParticleSystems = inParticleSystems;
         }
 
         protected override void Initialize()
         {
-            myParticleSystems.Add(new ParticleEmitter("EmitterA", 100, Vector.setNew(10, 16, 5), 0.1, 0.08, 0.99, true));
-            myParticleSystems.Add(new ParticleTensionLine("RopeA", 30, Vector.setNew(10, 16, 0), Vector.setNew(40, 16, 0), 1.0, 0.004, 0.986));
-            myParticleSystems.Add(new ParticleTensionLine("RopeB", 50, Vector.setNew(10, 16, 0), Vector.setNew(20, 10, 20), 1.0, 0.004, 0.986));
+            //myParticleSystems.Add(new ParticleEmitter("EmitterA", 100, Vector.setNew(10, 16, 5), 0.1, 0.08, 0.99, true));
+            //myParticleSystems.Add(new ParticleTensionLine("RopeA", 30, Vector.setNew(10, 16, 0), Vector.setNew(40, 16, 0), 1.0, 0.004, 0.986));
+            //myParticleSystems.Add(new ParticleTensionLine("RopeB", 50, Vector.setNew(10, 16, 0), Vector.setNew(20, 10, 20), 1.0, 0.004, 0.986));
         }
         protected unsafe override void LoadContent()
         {            
@@ -37,7 +37,6 @@ namespace ParticleSystem
             glBindBuffer(GL_ARRAY_BUFFER, vao);
         }
 
-
         protected unsafe override void Update()
         {
             float step = GameTime.TotalElapsedSeconds;
@@ -46,7 +45,7 @@ namespace ParticleSystem
             //glBindVertexArray(vao);
             glBindBuffer(GL_ARRAY_BUFFER, vao);
 
-
+            /*
             float[] verticesArray =
             {
                 0.5f, 0.5f, -30.0f, 0f, 1f, 0f,// top right
@@ -65,7 +64,13 @@ namespace ParticleSystem
                 verticesList.Add(item);
             }
             float[] vertices = verticesList.ToArray();
-            //float first = vertices[0];
+            */
+            myParticleSystems[1].myParticles[0].Pos.X = MathF.Sin(GameTime.TotalElapsedSeconds) * 10;
+            myParticleSystems[1].myParticles[0].Pos.Y = MathF.Sin(GameTime.TotalElapsedSeconds * 20);
+            myParticleSystems[1].myParticles[0].Pos.Z = MathF.Cos(GameTime.TotalElapsedSeconds + 0.5f) * 10 - 30;
+            myParticleSystems[1].UpdateParticles();
+            float[] vertices = myParticleSystems[1].createVAO();
+
             fixed (float* v = &vertices[0])
             {
                 glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertices.Length, v, GL_DYNAMIC_DRAW);
@@ -77,7 +82,7 @@ namespace ParticleSystem
             glVertexAttribPointer(1, 3, GL_FLOAT, false, 6 * sizeof(float), (void*)(3 * sizeof(float))); //index 1, size 3 (3 colorvalues), floats, not normalized, stride(bytes tot volgende lijn), 2 size of float (cast to pointer): first colorvalue starts at...
             glEnableVertexAttribArray(1);
             glBindVertexArray(vao);
-            glDrawArrays(GL_TRIANGLES, 0, 6);
+            glDrawArrays(GL_TRIANGLES, 0, vertices.Length * 6);
 
             //unbind vertex arrays
             glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -87,7 +92,8 @@ namespace ParticleSystem
         }
         protected override void Render()
         {
-            glClearColor(MathF.Sin(GameTime.TotalElapsedSeconds), 0, 0, 1);
+            //glClearColor(MathF.Sin(GameTime.TotalElapsedSeconds), 0, 0, 1);
+            glClearColor(1, 0, 0, 1);
             glClear(GL_COLOR_BUFFER_BIT);
             Update();
             Vector3 position = new Vector3(0, 0, -5);

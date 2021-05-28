@@ -46,7 +46,7 @@ namespace ParticleSystem
             inParticle.Age = 0.0;
             inParticle.Drag  = Vector.setNew(Drag, Drag, Drag);
             inParticle.ParticleInstance = myRandom.Next(33, 122);
-            inParticle.RGB = new Vector((int)(myRandom.NextDouble() * 255), (int)(myRandom.NextDouble() * 20), (int)(myRandom.NextDouble() * 255));
+            inParticle.RGB = new Vector((int)myRandom.NextDouble(), (int)myRandom.NextDouble(), (int)myRandom.NextDouble());
             inParticle.Lifespan = LifeSpan + myRandom.NextDouble();
         }
         public override void UpdateParticles()

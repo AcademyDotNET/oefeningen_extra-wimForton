@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GLFW;
-using Glfw3Dapp.Rendering.Display;
 
-namespace Glfw3Dapp.GameLoop
+
+namespace ParticleSystem
 {
     abstract class Game
     {
