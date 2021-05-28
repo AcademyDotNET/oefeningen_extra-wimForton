@@ -13,7 +13,7 @@ namespace ParticleSystem
         public string Name { get; set; } = "Unnamed";
         public abstract void StartParticle(Particle inparticle);
         public abstract void UpdateParticles();
-        public float[] createVAO()
+        public List<float> createVAO()
         {
             List<float> myVaoList = new List<float>();
             foreach (var item in myParticles)
@@ -37,8 +37,8 @@ namespace ParticleSystem
                 myVaoList.Add(1.0f);
                 myVaoList.Add(1.0f);
             }
-            float[] myVaoArray = myVaoList.ToArray();
-            return myVaoArray;
+            //float[] myVaoArray = myVaoList.ToArray();
+            return myVaoList;
 
         }
         public override string ToString()

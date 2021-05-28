@@ -10,24 +10,21 @@ namespace ParticleSystem
     {
         uint vao;
         uint vbo;
+
         List<ParticleSystems> myParticleSystems = new List<ParticleSystems>();
 
         Shader shader;
 
         Camera3D cam;
-        public RenderOpenGl3DObject(List<ParticleSystems> inParticleSystems, int initialWindowWidth, int initialWindowHeight, string initialWindowTitle) : base(initialWindowWidth, initialWindowHeight, initialWindowTitle)
+        public RenderOpenGl3DObject(List<ParticleSystems> inParticleSystems, float inFps, int initialWindowWidth, int initialWindowHeight, string initialWindowTitle) : base(initialWindowWidth, initialWindowHeight, initialWindowTitle)
         {
             myParticleSystems = inParticleSystems;
+            fps = inFps;
         }
 
         protected override void Initialize()
         {
-            //myParticleSystems.Add(new ParticleEmitter("EmitterA", 100, Vector.setNew(10, 16, 5), 0.1, 0.08, 0.99, true));
-            //myParticleSystems.Add(new ParticleTensionLine("RopeA", 30, Vector.setNew(10, 16, 0), Vector.setNew(40, 16, 0), 1.0, 0.004, 0.986));
-            //myParticleSystems.Add(new ParticleTensionLine("RopeB", 50, Vector.setNew(10, 16, 0), Vector.setNew(20, 10, 20), 1.0, 0.004, 0.986));
-        }
-        protected unsafe override void LoadContent()
-        {            
+            //DisplayManager.CreateWindow(InitialWindowWidth, InitialWindowHeight, InitialWindowTitle);
             shader = new Shader();
             shader.Load();
 
@@ -36,47 +33,33 @@ namespace ParticleSystem
             glBindVertexArray(vao);
             glBindBuffer(GL_ARRAY_BUFFER, vao);
         }
+        protected unsafe override void LoadContent()
+        {            
+
+        }
 
         protected unsafe override void Update()
         {
+            List<float> myVaoList = new List<float>();
             float step = GameTime.TotalElapsedSeconds;
-
-            //vao and vbo created in LoadContent()
-            //glBindVertexArray(vao);
             glBindBuffer(GL_ARRAY_BUFFER, vao);
-
-            /*
-            float[] verticesArray =
-            {
-                0.5f, 0.5f, -30.0f, 0f, 1f, 0f,// top right
-                -0.5f, 0.5f, -20.0f, 1f, 0f, 0f, // top left (x, y, r, g, b)
-                -0.5f, -0.5f, -20.0f, 0f, 0f, 1f, // bottom left
-
-                0.5f, 0.5f, -30.0f, 0f, 1f, 0f,// top right
-                0.5f, -0.5f, -30.0f, 0f, 1f, 1f, // bottom right
-                -0.5f, -0.5f, -20.0f, 0f, 0f, 1f, // bottom left
-
-            };
-            verticesArray[1] = MathF.Sin(step) + 0.5f;
-            List<float> verticesList = new List<float>();
-            foreach (var item in verticesArray)
-            {
-                verticesList.Add(item);
+            if (GameTime.isNewFrame) {
+                myParticleSystems[1].myParticles[0].Pos.X = MathF.Sin(GameTime.TotalElapsedSeconds) * 10;
+                myParticleSystems[1].myParticles[0].Pos.Y = MathF.Sin(GameTime.TotalElapsedSeconds * 20);
+                myParticleSystems[1].myParticles[0].Pos.Z = MathF.Cos(GameTime.TotalElapsedSeconds + 0.5f) * 10 - 30;
+                myParticleSystems[0].UpdateParticles();
+                myParticleSystems[1].UpdateParticles();
             }
-            float[] vertices = verticesList.ToArray();
-            */
-            myParticleSystems[1].myParticles[0].Pos.X = MathF.Sin(GameTime.TotalElapsedSeconds) * 10;
-            myParticleSystems[1].myParticles[0].Pos.Y = MathF.Sin(GameTime.TotalElapsedSeconds * 20);
-            myParticleSystems[1].myParticles[0].Pos.Z = MathF.Cos(GameTime.TotalElapsedSeconds + 0.5f) * 10 - 30;
-            myParticleSystems[1].UpdateParticles();
-            float[] vertices = myParticleSystems[1].createVAO();
+            myVaoList.AddRange(myParticleSystems[0].createVAO());
+            myVaoList.AddRange(myParticleSystems[1].createVAO());
+            float[] vertices = myVaoList.ToArray();
+            //float[] vertices = myParticleSystems[0].createVAO();
 
             fixed (float* v = &vertices[0])
             {
                 glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertices.Length, v, GL_DYNAMIC_DRAW);
-                //glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertices.Length, v, GL_STATIC_DRAW);
-                //glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertices.Count, null, GL_DYNAMIC_DRAW);
             }
+
             glVertexAttribPointer(0, 3, GL_FLOAT, false, 6 * sizeof(float), (void*)0);// index, 3D positions (x and y), type, not normalized, stride(aantal bytes tot de volgende vertex): 5 X float, vertexes start on: 0(casted to some type of pointer)
             glEnableVertexAttribArray(0);
             glVertexAttribPointer(1, 3, GL_FLOAT, false, 6 * sizeof(float), (void*)(3 * sizeof(float))); //index 1, size 3 (3 colorvalues), floats, not normalized, stride(bytes tot volgende lijn), 2 size of float (cast to pointer): first colorvalue starts at...
@@ -93,7 +76,7 @@ namespace ParticleSystem
         protected override void Render()
         {
             //glClearColor(MathF.Sin(GameTime.TotalElapsedSeconds), 0, 0, 1);
-            glClearColor(1, 0, 0, 1);
+            glClearColor(0.2f, 0.2f, 0.3f, 1);
             glClear(GL_COLOR_BUFFER_BIT);
             Update();
             Vector3 position = new Vector3(0, 0, -5);

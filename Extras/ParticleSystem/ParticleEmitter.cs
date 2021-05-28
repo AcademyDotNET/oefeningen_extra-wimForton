@@ -8,14 +8,12 @@ namespace ParticleSystem
 {
     class ParticleEmitter: ParticleSystems
     {
-        //public List<Particle> myParticles = new List<Particle>();
         private double Gravity { get; set; } = 0;
         private double LifeSpan { get; set; }
         private bool RecycleParticles { get; set; } = false;
         private double Explosion { get; set; } = 0;
         private double Drag { get; set; } = 0.999;
         private Random myRandom = new Random();
-        //private Vector color = new Vector(150, 255, 255);
 
         public ParticleEmitter(int input = 0)
         {
@@ -46,7 +44,8 @@ namespace ParticleSystem
             inParticle.Age = 0.0;
             inParticle.Drag  = Vector.setNew(Drag, Drag, Drag);
             inParticle.ParticleInstance = myRandom.Next(33, 122);
-            inParticle.RGB = new Vector((int)myRandom.NextDouble(), (int)myRandom.NextDouble(), (int)myRandom.NextDouble());
+            inParticle.RGB = new Vector(myRandom.NextDouble(), myRandom.NextDouble(), myRandom.NextDouble());
+            inParticle.Size = 0.4;
             inParticle.Lifespan = LifeSpan + myRandom.NextDouble();
         }
         public override void UpdateParticles()
@@ -82,9 +81,7 @@ namespace ParticleSystem
         }
         public static void CollideEdges(Particle inParticle)
         {
-            //if (inParticle.Pos.X >= Console.WindowWidth * 0.5 -2 || inParticle.Pos.X <= 1) inParticle.Vel.X *= -1;
-            //if (inParticle.Pos.Y >= Console.WindowHeight - 4) inParticle.Vel.Y *= -1;
-            if (inParticle.Pos.Y >= 70) inParticle.Vel.Y *= -0.9;
+            if (inParticle.Pos.Y <= -5) inParticle.Vel.Y *= -0.6;
         }
 
     }

@@ -17,7 +17,7 @@ namespace ParticleSystem
             //TestStuff();
 
             List<ParticleSystems> myScene = LoadScene();
-            Game game = new RenderOpenGl3DObject(myScene, 1024, 600, "WindowTitle");
+            Game game = new RenderOpenGl3DObject(myScene, 30f, 1024, 600, "WindowTitle");
             game.Run();
         }
 
@@ -68,9 +68,9 @@ namespace ParticleSystem
         private static List<ParticleSystems> LoadScene()
         {
             List<ParticleSystems> myParticleSystems = new List<ParticleSystems>();
-            myParticleSystems.Add(new ParticleEmitter("EmitterA", 100, Vector.setNew(10, 16, 5), 0.1, 0.08, 0.99, true));
-            myParticleSystems.Add(new ParticleTensionLine("RopeA", 30, Vector.setNew(-5, 0, -30), Vector.setNew(5, 0, -30), 1.0, -0.00002, 0.993));
-            myParticleSystems.Add(new ParticleTensionLine("RopeB", 50, Vector.setNew(10, 16, 0), Vector.setNew(20, 10, 20), 1.0, 0.004, 0.986));
+            myParticleSystems.Add(new ParticleEmitter("EmitterA", 100, Vector.setNew(0, 0, -30), 0.06, -0.030, 0.999, true, 2));
+            myParticleSystems.Add(new ParticleTensionLine("RopeA", 30, 30, Vector.setNew(-5, 0, -30), Vector.setNew(5, 0, -30), 1.0, -0.00002, 0.993));
+            myParticleSystems.Add(new ParticleTensionLine("RopeB", 50, 6, Vector.setNew(10, 16, 0), Vector.setNew(20, 10, 20), 1.0, 0.004, 0.986));
             return myParticleSystems;
         }
         private static void PlayParticles()
