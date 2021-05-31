@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace ParticleSystem
 {
     
-    class ParticleTensionLine : ParticleSystems
+    class ParticleTensionLine : ParticleSystems, IRenderableGeo
     {
         //public List<Particle> myParticles = new List<Particle>();
         private double Drag { get; set; } = 0.999;
@@ -43,7 +43,7 @@ namespace ParticleSystem
                 SetNeighbourProporties(myParticles[i]);
             }
         }
-        public override void StartParticle(Particle inParticle)
+        public void StartParticle(Particle inParticle)
         {
             int id = inParticle.ParticleId;
             inParticle.ParticleInstance = 50;
@@ -53,7 +53,7 @@ namespace ParticleSystem
             inParticle.Pos = Vector.Lerp(StartPos, EndPos, interpolation);
             inParticle.PrevPos = inParticle.Pos;
             inParticle.RGB = new Vector(myRandom.NextDouble(), myRandom.NextDouble(), myRandom.NextDouble());
-            inParticle.Size = 0.2;
+            inParticle.Size = 0.6;
             if (id == 0 || id == ParticleMaxAmount - 1)
             {
                 inParticle.Fix = true;
@@ -82,7 +82,7 @@ namespace ParticleSystem
                 inParticle.RestLengths.Add(neighbourBLength);
             }
         }
-        public override void UpdateParticles()
+        public override void Update()
         {
             for (int s = 0; s < SamplesPerFrame; s++)
             {

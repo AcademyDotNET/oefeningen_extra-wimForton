@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ParticleSystem
 {
-    class ParticleEmitter: ParticleSystems
+    class ParticleEmitter: ParticleSystems, IRenderableGeo
     {
         private double Gravity { get; set; } = 0;
         private double LifeSpan { get; set; }
@@ -34,7 +34,7 @@ namespace ParticleSystem
                 StartParticle(myParticles[i]);
             }  
         }
-        public override void StartParticle(Particle inParticle) {
+        public void StartParticle(Particle inParticle) {
             double velocityX = (myRandom.NextDouble() - 0.5) * Explosion;
             double velocityY = (myRandom.NextDouble() - 0.5) * Explosion;
             double velocityZ = (myRandom.NextDouble() - 0.5) * Explosion;
@@ -48,7 +48,7 @@ namespace ParticleSystem
             inParticle.Size = 0.4;
             inParticle.Lifespan = LifeSpan + myRandom.NextDouble();
         }
-        public override void UpdateParticles()
+        public override void Update()
         {
             for (int i = 0; i < myParticles.Count; i++)
             {
@@ -74,14 +74,17 @@ namespace ParticleSystem
                     CollideEdges(myParticles[i]);
                     myParticles[i].Vel *= myParticles[i].Drag;
                     myParticles[i].Vel.Y += myParticles[i].Mass * Gravity;
-
                     myParticles[i].Pos += myParticles[i].Vel;
                 }
             }
         }
         public static void CollideEdges(Particle inParticle)
         {
-            if (inParticle.Pos.Y <= -5) inParticle.Vel.Y *= -0.6;
+            if (inParticle.Pos.Y < -5) { 
+                inParticle.Vel.Y *= -0.9;
+                inParticle.Pos.Y = -4.95;
+            }
+
         }
 
     }

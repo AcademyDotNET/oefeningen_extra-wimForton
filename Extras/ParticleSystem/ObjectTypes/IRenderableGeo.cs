@@ -9,12 +9,10 @@ namespace ParticleSystem
     interface IRenderableGeo
     {
 
-        public List<Particle> MyParticles { get; set; }
-        //public Vector EmitPos;
-        //public string Name;
-        
-        public abstract void StartParticle(Particle inparticle);
-        public abstract void UpdateParticles();
+        public List<Particle> myParticles { get; set; }
+        public abstract List<float> GetVAO();
+        //public abstract void StartParticle(Particle inparticle);
+        public abstract void Update();
         public abstract string ToString();
         
     }

@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace ParticleSystem
 {
-    abstract class ParticleSystems// : IRenderableGeo
+    abstract class ParticleSystems : IRenderableGeo
     {
-        public List<Particle> myParticles = new List<Particle>();
+        public List<Particle> myParticles { get; set; } = new List<Particle>();
         public Vector EmitPos = new Vector(0, 0, 0);
         public string Name { get; set; } = "Unnamed";
-        public abstract void StartParticle(Particle inparticle);
-        public abstract void UpdateParticles();
-        public List<float> createVAO()
+        //public abstract void StartParticle(Particle inparticle);
+        public abstract void Update();
+        public virtual List<float> GetVAO()
         {
             List<float> myVaoList = new List<float>();
             foreach (var item in myParticles)

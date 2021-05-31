@@ -16,25 +16,15 @@ namespace ParticleSystem
             //PlayParticleFactory();
             //TestStuff();
 
-            List<ParticleSystems> myScene = LoadScene();
-            Game game = new RenderOpenGl3DObject(myScene, 30f, 1024, 600, "WindowTitle");
+            List<IRenderableGeo> myObjects = LoadScene();
+            Game game = new RenderOpenGl3DObject(myObjects, 30f, 1024, 600, "WindowTitle");
             game.Run();
         }
 
         private static void TestStuff()
         {
-            Vector test = new Vector(0.1, 4.0, 0.1);
-            Vector test2 = new Vector(3.0, 2.0, 0.0);
-            Console.WriteLine(Vector.length(test));
-            Console.WriteLine((double)test);
-            Console.WriteLine(Vector.Normalize (test));
-            Console.WriteLine(Vector.CrossProduct(test, test2));
-            test = new Vector(1.0, 4.0, 0.0);
-            test2 = new Vector(1.0, 4.0, 0.0);
-            //Console.WriteLine(test == test2);
-            test2 = new Vector(1.0, 4.0, 0.0);
-            //Console.WriteLine(test < test2);
-            //Console.WriteLine(test >= test2);
+            PolyObjectLoader myObject = new PolyObjectLoader();
+            myObject.LoadFromFile();
         }
         private static void PlayParticleFactory()
         {
@@ -65,13 +55,14 @@ namespace ParticleSystem
 
             //Console.WriteLine($"You've build a {myParticle.GetType().Name}");
         }
-        private static List<ParticleSystems> LoadScene()
+        private static List<IRenderableGeo> LoadScene()
         {
-            List<ParticleSystems> myParticleSystems = new List<ParticleSystems>();
-            myParticleSystems.Add(new ParticleEmitter("EmitterA", 100, Vector.setNew(0, 0, -30), 0.06, -0.030, 0.999, true, 2));
-            myParticleSystems.Add(new ParticleTensionLine("RopeA", 30, 30, Vector.setNew(-5, 0, -30), Vector.setNew(5, 0, -30), 1.0, -0.00002, 0.993));
-            myParticleSystems.Add(new ParticleTensionLine("RopeB", 50, 6, Vector.setNew(10, 16, 0), Vector.setNew(20, 10, 20), 1.0, 0.004, 0.986));
-            return myParticleSystems;
+            List<IRenderableGeo> myRenderObjects = new List<IRenderableGeo>();
+            myRenderObjects.Add(new ParticleEmitter("EmitterA", 20, Vector.setNew(0, 0, -30), 0.12, -0.10, 0.9995, true, 2));
+            myRenderObjects.Add(new ParticleTensionLine("RopeA", 30, 30, Vector.setNew(-5, 1.5, -30), Vector.setNew(0, 1.5, -30), 1.0, -0.00002, 0.993));
+            myRenderObjects.Add(new PolyObjectLoader());
+            //myParticleSystems.Add(new ParticleTensionLine("RopeB", 50, 6, Vector.setNew(10, 16, 0), Vector.setNew(20, 10, 20), 1.0, 0.004, 0.986));
+            return myRenderObjects;
         }
         private static void PlayParticles()
         {/*
