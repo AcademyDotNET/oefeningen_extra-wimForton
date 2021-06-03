@@ -23,7 +23,7 @@ namespace GameEngine
         {
             Name = inName;
             Gravity = inGravity;
-            EmitPos = inEmitPos;
+            Position = inEmitPos;
             Explosion = inExplosion;
             Drag = friction;
             RecycleParticles = recycle;
@@ -38,7 +38,7 @@ namespace GameEngine
             double velocityX = (myRandom.NextDouble() - 0.5) * Explosion;
             double velocityY = (myRandom.NextDouble() - 0.5) * Explosion;
             double velocityZ = (myRandom.NextDouble() - 0.5) * Explosion;
-            inParticle.Pos = EmitPos;
+            inParticle.Pos = Position;
             inParticle.Mass = myRandom.NextDouble() * 0.5;
             inParticle.Vel = new Vector(velocityX, velocityY, velocityZ);
             inParticle.Age = 0.0;

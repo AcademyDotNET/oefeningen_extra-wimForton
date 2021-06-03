@@ -9,10 +9,11 @@ namespace GameEngine
     abstract class ParticleSystems : IRenderableGeo
     {
         public List<Particle> myParticles { get; set; } = new List<Particle>();
-        public Vector EmitPos = new Vector(0, 0, 0);
+        public Vector Position { get; set; } = new Vector(0, 0, 0);
         public string Name { get; set; } = "Unnamed";
         //public abstract void StartParticle(Particle inparticle);
         public abstract void Update();
+        public virtual void UpdateVAO() { }
         public virtual List<float> GetVAO()
         {
             List<float> myVaoList = new List<float>();

@@ -10,9 +10,11 @@ namespace GameEngine
     {
         uint vao;
         uint vbo;
+        private KeyStrokes myKeystrokes = new KeyStrokes();
 
         List<IRenderableGeo> myParticleSystems = new List<IRenderableGeo>();
-
+        List<float> myVaoList = new List<float>();
+        float[] vertices;
         Shader shader;
 
         Camera3D cam;
@@ -30,7 +32,6 @@ namespace GameEngine
             glEnable(GL_DEPTH_TEST);
             vao = glGenVertexArray();
             vbo = glGenBuffer();
-            
             glBindVertexArray(vao);
             glBindBuffer(GL_ARRAY_BUFFER, vao);
         }
@@ -41,21 +42,45 @@ namespace GameEngine
 
         protected unsafe override void Update()
         {
-            List<float> myVaoList = new List<float>();
-            float step = GameTime.TotalElapsedSeconds;
             glBindBuffer(GL_ARRAY_BUFFER, vao);
+
             if (GameTime.isNewFrame) {
+                myVaoList.Clear();
                 for (int i = 0; i < myParticleSystems.Count; i++)
                 {
                     myParticleSystems[i].Update();
+                    myVaoList.AddRange(myParticleSystems[i].GetVAO());
+                }
+                vertices = myVaoList.ToArray();
+
+                List<InputState> stateList = new List<InputState>();
+                stateList.Add(Glfw.GetKey(DisplayManager.Window, Keys.Left));
+                stateList.Add(Glfw.GetKey(DisplayManager.Window, Keys.Right));
+                stateList.Add(Glfw.GetKey(DisplayManager.Window, Keys.Up));
+                stateList.Add(Glfw.GetKey(DisplayManager.Window, Keys.Down));
+                int keyNum = myKeystrokes.TestKeys(stateList, false);
+                if(keyNum == 0)
+                {
+                    myParticleSystems[2].Position.X -= 0.1;
+                    myParticleSystems[2].UpdateVAO();
+                }
+                if (keyNum == 1)
+                {
+                    myParticleSystems[2].Position.X += 0.1;
+                    myParticleSystems[2].UpdateVAO();
+                }
+                if (keyNum == 2)
+                {
+                    myParticleSystems[2].Position.Z += 0.1;
+                    myParticleSystems[2].UpdateVAO();
+                }
+                if (keyNum == 3)
+                {
+                    myParticleSystems[2].Position.Z -= 0.1;
+                    myParticleSystems[2].UpdateVAO();
                 }
             }
-            myVaoList.AddRange(myParticleSystems[0].GetVAO());
-            myVaoList.AddRange(myParticleSystems[1].GetVAO());
-            myVaoList.AddRange(myParticleSystems[2].GetVAO());
-            float[] vertices = myVaoList.ToArray();
-            //float[] vertices = myParticleSystems[0].createVAO();
-
+            
             fixed (float* v = &vertices[0])
             {
                 glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertices.Length, v, GL_DYNAMIC_DRAW);
@@ -76,27 +101,21 @@ namespace GameEngine
         }
         protected override void Render()
         {
-            //glClearColor(MathF.Sin(GameTime.TotalElapsedSeconds), 0, 0, 1);
             glClearColor(0.2f, 0.2f, 0.3f, 1);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
             Update();
             Vector3 position = new Vector3(0, 0, -5);
             Vector3 scale = new Vector3(1, 1, 1);
-            float rotation = MathF.Sin(GameTime.TotalElapsedSeconds);
-            float rotation2 = MathF.Sin(GameTime.TotalElapsedSeconds);
+
 
             Matrix4x4 trans = Matrix4x4.CreateTranslation(position.X, position.Y, position.Z);
             Matrix4x4 sca = Matrix4x4.CreateScale(scale.X, scale.Y, scale.Z);
-            Matrix4x4 rot = Matrix4x4.CreateRotationY(rotation);
-            Matrix4x4 rot2 = Matrix4x4.CreateRotationY(MathF.PI * 2);
+            Matrix4x4 rot = Matrix4x4.CreateRotationY(MathF.PI * 2);
 
             shader.SetMatrix4x4("model", sca * rot * trans);
             shader.Use();
-            shader.SetMatrix4x4("projection", rot2 * cam.GetProjectionMatrix());
+            shader.SetMatrix4x4("projection", rot * cam.GetProjectionMatrix());
 
-            //glBindVertexArray(vao);
-            //glDrawArrays(GL_TRIANGLES, 0, 6);//// kunnen we dit meer keer?
-            //glBindVertexArray(0);
 
             Glfw.SwapBuffers(DisplayManager.Window);
             glFlush();

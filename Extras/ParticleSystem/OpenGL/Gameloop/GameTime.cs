@@ -12,6 +12,6 @@ namespace GameEngine
         public static float TotalElapsedSeconds { get; set; }
         public static float PrevFrame { get; set; }
         public static float Frame { get; set; }
-        public static bool isNewFrame { get; set; }
+        public static bool isNewFrame { get; set; } = true;
     }
 }

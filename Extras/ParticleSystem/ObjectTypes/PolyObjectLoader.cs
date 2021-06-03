@@ -13,14 +13,16 @@ namespace GameEngine
         public List<Polygon> myPolygons { get; set; } = new List<Polygon>();
         List<float> myVaoList { get; set; } = new List<float>();
         Vector RGBColor { get; set; } = new Vector(0,0.5,1);
-        Vector Position { get; set; } = new Vector(0, 0, -30);
+        //public Vector Position { get; set; } = new Vector(0, 0, -30);
         public PolyObjectLoader()
         {
+            Position.Z = -30;
             LoadFromFile();
-            CreateVAO();
+            UpdateVAO();
         }
-        public void CreateVAO()
+        public override void UpdateVAO()
         {
+            myVaoList.Clear();
             foreach (var poly in myPolygons)//create 2 triangles per quad in the right order
             {
                 VertexToVao(0, poly);
