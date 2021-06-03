@@ -7,15 +7,15 @@ using System.Numerics;
 using GLFW;
 
 
-namespace ParticleSystem
+namespace GameEngine
 {
-    abstract class Game
+    abstract class RenderOpenGL
     {
         protected float fps = 25;
         int InitialWindowWidth { get; set;  }
         int InitialWindowHeight { get; set; }
         string InitialWindowTitle { get; set; }
-        public Game(int initialWindowWidth, int initialWindowHeight, string initialWindowTitle)
+        public RenderOpenGL(int initialWindowWidth, int initialWindowHeight, string initialWindowTitle)
         {
             InitialWindowWidth = initialWindowWidth;
             InitialWindowHeight = initialWindowHeight;

@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using GLFW;
-using static ParticleSystem.OpenGL.GL;
+using static GameEngine.OpenGL.GL;
 
-namespace ParticleSystem
+namespace GameEngine
 {
     class ShaderPhong
     {

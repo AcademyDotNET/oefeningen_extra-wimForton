@@ -2,11 +2,11 @@
 using System;
 using System.Collections.Generic;
 using System.Numerics;
-using static ParticleSystem.OpenGL.GL;
+using static GameEngine.OpenGL.GL;
 
-namespace ParticleSystem
+namespace GameEngine
 {
-    class RenderOpenGl3DObject : Game
+    class RenderOpenGl3DObject : RenderOpenGL
     {
         uint vao;
         uint vbo;
@@ -45,13 +45,10 @@ namespace ParticleSystem
             float step = GameTime.TotalElapsedSeconds;
             glBindBuffer(GL_ARRAY_BUFFER, vao);
             if (GameTime.isNewFrame) {
-                myParticleSystems[1].myParticles[0].Pos.X = MathF.Sin(GameTime.Frame / 60) * 10;
-                myParticleSystems[1].myParticles[0].Pos.Y = MathF.Sin(GameTime.Frame / 3) + 1.5;
-                myParticleSystems[1].myParticles[0].Pos.Z = MathF.Cos(GameTime.Frame / 60 + 0.5f) * 10 - 30;
-                //myParticleSystems[1].myParticles[0].Pos = Vector.GetEulerRotation(myParticleSystems[1].myParticles[0].Pos, 0, 0.005, 0, "zxy");
-
-                myParticleSystems[0].Update();
-                myParticleSystems[1].Update();
+                for (int i = 0; i < myParticleSystems.Count; i++)
+                {
+                    myParticleSystems[i].Update();
+                }
             }
             myVaoList.AddRange(myParticleSystems[0].GetVAO());
             myVaoList.AddRange(myParticleSystems[1].GetVAO());
