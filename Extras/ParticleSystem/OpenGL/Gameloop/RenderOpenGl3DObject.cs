@@ -11,6 +11,11 @@ namespace GameEngine
         uint vao;
         uint vbo;
         private KeyStrokes myKeystrokes = new KeyStrokes();
+        private MouseButtons myMouseButtons = new MouseButtons();
+        double mouseXpos, mouseYpos;
+        double mousePrevXpos, mousePrevYpos;
+        private Matrix4x4 sceneRotation = Matrix4x4.CreateFromYawPitchRoll(0.0f, 0.0f, 0.0f);
+        private Matrix4x4 scenePosition = Matrix4x4.CreateTranslation(0.0f, 0.0f, 0.0f);
 
         List<IRenderableGeo> myParticleSystems = new List<IRenderableGeo>();
         List<float> myVaoList = new List<float>();
@@ -52,33 +57,98 @@ namespace GameEngine
                     myVaoList.AddRange(myParticleSystems[i].GetVAO());
                 }
                 vertices = myVaoList.ToArray();
+                List<InputState> mouseButtonStateList = new List<InputState>();
+                mouseButtonStateList.Add(Glfw.GetMouseButton(DisplayManager.Window, MouseButton.Left));
+                mouseButtonStateList.Add(Glfw.GetMouseButton(DisplayManager.Window, MouseButton.Middle));
+                mouseButtonStateList.Add(Glfw.GetMouseButton(DisplayManager.Window, MouseButton.Right));
+                int mouseButton = myMouseButtons.TestKeys(mouseButtonStateList, true);
+                if (mouseButton == 0)//mouseButtonLeft
+                {
+                    Glfw.GetCursorPosition(DisplayManager.Window, out mouseXpos, out mouseYpos);
+                    double mouseXmove = mouseXpos - mousePrevXpos;
+                    double mouseYmove = mouseYpos - mousePrevYpos;
+                    sceneRotation = Matrix4x4.CreateFromYawPitchRoll((float)mouseXmove * 0.01f, 0.0f, 0.0f) * sceneRotation;
+                    sceneRotation = Matrix4x4.CreateFromYawPitchRoll(0.0f, (float)mouseYmove * 0.01f, 0.0f) * sceneRotation;
+                    mousePrevXpos = mouseXpos;
+                    mousePrevYpos = mouseYpos;
+                }
+                else if (mouseButton == 1)//mouseButtonMiddle
+                {
+                    Glfw.GetCursorPosition(DisplayManager.Window, out mouseXpos, out mouseYpos);
+                    double mouseXmove = mouseXpos - mousePrevXpos;
+                    double mouseYmove = mouseYpos - mousePrevYpos;
+                    scenePosition = Matrix4x4.CreateTranslation((float)mouseXmove * 0.006f, 0.0f, 0.0f) * scenePosition;
+                    scenePosition = Matrix4x4.CreateTranslation(0.0f, 0.0f, (float)mouseYmove * 0.01f) * scenePosition;
+                    mousePrevXpos = mouseXpos;
+                    mousePrevYpos = mouseYpos;
+                }
+                else if (mouseButton == 2)//mouseButtonRight
+                {
+                    Glfw.GetCursorPosition(DisplayManager.Window, out mouseXpos, out mouseYpos);
+                    double mouseXmove = mouseXpos - mousePrevXpos;
+                    double mouseYmove = mouseYpos - mousePrevYpos;
+                    //scenePosition = Matrix4x4.CreateTranslation((float)mouseXmove * 0.001f, 0.0f, 0.0f) * scenePosition;
+                    scenePosition = Matrix4x4.CreateTranslation(0.0f, (float)mouseYmove * -0.005f, 0.0f) * scenePosition;
+                    mousePrevXpos = mouseXpos;
+                    mousePrevYpos = mouseYpos;
+                }
+                else
+                {
+                    Glfw.GetCursorPosition(DisplayManager.Window, out mousePrevXpos, out mousePrevYpos);
+                }
+
 
                 List<InputState> stateList = new List<InputState>();
                 stateList.Add(Glfw.GetKey(DisplayManager.Window, Keys.Left));
                 stateList.Add(Glfw.GetKey(DisplayManager.Window, Keys.Right));
                 stateList.Add(Glfw.GetKey(DisplayManager.Window, Keys.Up));
                 stateList.Add(Glfw.GetKey(DisplayManager.Window, Keys.Down));
-                int keyNum = myKeystrokes.TestKeys(stateList, false);
+                stateList.Add(Glfw.GetKey(DisplayManager.Window, Keys.A));
+                stateList.Add(Glfw.GetKey(DisplayManager.Window, Keys.D));
+                stateList.Add(Glfw.GetKey(DisplayManager.Window, Keys.W));
+                stateList.Add(Glfw.GetKey(DisplayManager.Window, Keys.S));
+                //stateList.Add(Glfw.GetMouseButton(DisplayManager.Window, MouseButton.Left));
+                //stateList.Add(Glfw.GetMouseButton(DisplayManager.Window, MouseButton.Right));
+
+
+                int keyNum = myKeystrokes.TestKeys(stateList, true);
                 if(keyNum == 0)
                 {
-                    myParticleSystems[2].Position.X -= 0.1;
-                    myParticleSystems[2].UpdateVAO();
+                    sceneRotation = Matrix4x4.CreateFromYawPitchRoll(0.004f, 0.0f, 0.0f) * sceneRotation;
                 }
                 if (keyNum == 1)
                 {
-                    myParticleSystems[2].Position.X += 0.1;
-                    myParticleSystems[2].UpdateVAO();
+                    sceneRotation = Matrix4x4.CreateFromYawPitchRoll(-0.004f, 0.0f, 0.0f) * sceneRotation;
                 }
                 if (keyNum == 2)
                 {
-                    myParticleSystems[2].Position.Z += 0.1;
-                    myParticleSystems[2].UpdateVAO();
+                    sceneRotation = Matrix4x4.CreateFromYawPitchRoll(0.0f, -0.004f, -0.0f) * sceneRotation;
                 }
                 if (keyNum == 3)
                 {
-                    myParticleSystems[2].Position.Z -= 0.1;
-                    myParticleSystems[2].UpdateVAO();
+                    sceneRotation = Matrix4x4.CreateFromYawPitchRoll(0.0f, 0.004f, 0.0f) * sceneRotation;
                 }
+                if (keyNum == 4)
+                {
+                    sceneRotation = Matrix4x4.CreateTranslation(-0.05f, 0.0f, 0.0f) * sceneRotation;
+                }
+                if (keyNum == 5)
+                {
+                    sceneRotation = Matrix4x4.CreateTranslation(0.05f, 0.0f, 0.0f) * sceneRotation;
+                }
+                if (keyNum == 6)
+                {
+                    sceneRotation = Matrix4x4.CreateTranslation(0.0f, 0.0f, -0.05f) * sceneRotation;
+                }
+                if (keyNum == 7)
+                {
+                    sceneRotation = Matrix4x4.CreateTranslation(0.0f, 0.0f, 0.05f) * sceneRotation;
+                }
+
+
+                //mousePrevXpos = 0;
+                //mousePrevYpos = 0;
+
             }
             
             fixed (float* v = &vertices[0])
@@ -112,7 +182,7 @@ namespace GameEngine
             Matrix4x4 sca = Matrix4x4.CreateScale(scale.X, scale.Y, scale.Z);
             Matrix4x4 rot = Matrix4x4.CreateRotationY(MathF.PI * 2);
 
-            shader.SetMatrix4x4("model", sca * rot * trans);
+            shader.SetMatrix4x4("view", sceneRotation * scenePosition);
             shader.Use();
             shader.SetMatrix4x4("projection", rot * cam.GetProjectionMatrix());
 

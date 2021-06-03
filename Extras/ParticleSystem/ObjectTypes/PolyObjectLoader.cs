@@ -16,7 +16,7 @@ namespace GameEngine
         //public Vector Position { get; set; } = new Vector(0, 0, -30);
         public PolyObjectLoader()
         {
-            Position.Z = -30;
+            //Position.Z = -30;
             LoadFromFile();
             UpdateVAO();
         }

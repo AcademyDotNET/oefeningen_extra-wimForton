@@ -31,4 +31,4 @@ H:\cursus_informatica\extras\Extras\ParticleSystem\obj\Debug\net5.0\ParticleSyst
 H:\cursus_informatica\extras\Extras\ParticleSystem\obj\Debug\net5.0\ref\ParticleSystem.dll
 H:\cursus_informatica\extras\Extras\ParticleSystem\obj\Debug\net5.0\ParticleSystem.pdb
 H:\cursus_informatica\extras\Extras\ParticleSystem\obj\Debug\net5.0\ParticleSystem.genruntimeconfig.cache
-H:\cursus_informatica\extras\Extras\ParticleSystem\obj\Debug\net5.0\ParticleSystem.OpenGL.GLFW.Strings.resources
+H:\cursus_informatica\extras\Extras\ParticleSystem\obj\Debug\net5.0\GameEngine.OpenGL.GLFW.Strings.resources

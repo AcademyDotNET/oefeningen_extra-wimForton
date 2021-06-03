@@ -15,13 +15,14 @@ namespace GameEngine
 
 
             List<IRenderableGeo> myObjects = LoadScene();
-            myObjects[2].Position.Z = -30.0;
-            myObjects[3].Position.Z = -30.0;
+            //myObjects[2].Position.Z = -30.0;
+            //myObjects[3].Position.Z = -30.0;
             myObjects[3].Position.X = 5;
             myObjects[2].UpdateVAO();
             myObjects[3].UpdateVAO();
 
-            RenderOpenGL game = new RenderOpenGl3DObject(myObjects, 30f, 1024, 600, "WindowTitle");
+            //RenderOpenGL game = new RenderOpenGl3DObject(myObjects, 30f, 1024, 600, "WindowTitle");
+            RenderOpenGL game = new RenderOpenGl3DObject(myObjects, 30f, 1920, 1080, "WindowTitle");
             game.Run();
         }
         private static List<IRenderableGeo> LoadScene()
