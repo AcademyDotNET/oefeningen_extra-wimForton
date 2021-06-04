@@ -13,12 +13,15 @@ namespace GameEngine
         public List<Polygon> myPolygons { get; set; } = new List<Polygon>();
         List<float> myVaoList { get; set; } = new List<float>();
         Vector RGBColor { get; set; } = new Vector(0,0.5,1);
+        private string FilePath { get; set; }
         //public Vector Position { get; set; } = new Vector(0, 0, -30);
-        public PolyObjectLoader()
+        public PolyObjectLoader(string inFilePath)
         {
+            FilePath = inFilePath;
             //Position.Z = -30;
             LoadFromFile();
             UpdateVAO();
+
         }
         public override void UpdateVAO()
         {
@@ -50,7 +53,7 @@ namespace GameEngine
         public override void Update() { }
         public void LoadFromFile()
         {
-            using (StreamReader streamReader = new StreamReader(@"H:\cursus_informatica\extras\objTest\test.obj"))
+            using (StreamReader streamReader = new StreamReader(FilePath))
             {
                 while (!streamReader.EndOfStream)
                 {
@@ -68,6 +71,7 @@ namespace GameEngine
                         Random myRandom = new Random();
                         Polygon mypoly = new Polygon();
                         Vector randomColor = new Vector(myRandom.NextDouble(), myRandom.NextDouble(), myRandom.NextDouble());
+                        randomColor *= RGBColor;
                         for (int i = 1; i < values.Length; i++)
                         {
                             int vertice = Convert.ToInt32(values[i]) - 1;//Convert 1 based (obj) to 0 based
