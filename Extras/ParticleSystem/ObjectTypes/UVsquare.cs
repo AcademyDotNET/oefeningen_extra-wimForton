@@ -36,6 +36,8 @@ namespace GameEngine
             myVaoList.Add(0.5f);
             myVaoList.Add(1.0f);
             //UV 3
+            myVaoList.Add(1.0f);
+            myVaoList.Add(0.0f);
         }
         public override void UpdateVAO()
         {

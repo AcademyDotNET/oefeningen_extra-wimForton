@@ -18,14 +18,34 @@ namespace GameEngine
 
         public ShaderTextured()
         {
+            //vertexCode = @"#version 330 core
+            //                layout (location = 0) in vec3 aPosition;
+            //                layout (location = 1) in vec3 aColor;
+            //                out vec4 vertexColor;
+            //                uniform mat4 projection;
+            //                uniform mat4 model;
+            //                uniform mat4 view;
+            //                uniform mat4 modelMatrix;
+                                    
+            //                void main()
+            //                {
+            //                    vertexColor = vec4(aColor.rgb, 1.0);
+            //                    //modelMatrix = model * vec4(aPosition, 1.0);
+            //                    //gl_Position = model * vec4(aPosition, 1.0);
+            //                    gl_Position = projection * view * vec4(aPosition, 1.0);
+            //                }";
             vertexCode = @"#version 330 core 
  
                         // Input vertex data, different for all executions of this shader.
-                        layout(location = 0) in vec3 vertexPosition_modelspace; 
+                        layout(location = 0) in vec3 aPosition; 
                         layout(location = 1) in vec2 vertexUV; 
  
                         // Output data ; will be interpolated for each fragment. 
                         out vec2 UV; 
+                        uniform mat4 projection;
+                        uniform mat4 model;
+                        uniform mat4 view;
+                        uniform mat4 modelMatrix;
  
                         // Values that stay constant for the whole mesh.
                         uniform mat4 MVP; 
@@ -33,7 +53,8 @@ namespace GameEngine
                         void main(){ 
  
                             // Output position of the vertex, in clip space : MVP * position
-                            gl_Position = MVP * vec4(vertexPosition_modelspace,1); 
+                            gl_Position = projection * view * vec4(aPosition, 1.0);
+                            //gl_Position = MVP * vec4(vertexPosition_modelspace,1); 
  
                             // UV of the vertex. No special space for this one. 
                             UV = vertexUV; 

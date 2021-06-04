@@ -19,6 +19,7 @@ namespace GameEngine
         double mousePrevXpos, mousePrevYpos;
         private Matrix4x4 sceneRotation = Matrix4x4.CreateFromYawPitchRoll(0.0f, 0.0f, 0.0f);
         private Matrix4x4 scenePosition = Matrix4x4.CreateTranslation(0.0f, 0.0f, 0.0f);
+        uint texID;
 
         /////////////////////////////ganzenbord
         private Game myGame = new Game();
@@ -30,7 +31,7 @@ namespace GameEngine
         List<IRenderableGeo> myRendergeo = new List<IRenderableGeo>();
         List<float> myVaoList = new List<float>();
         float[] vertices;
-        Shader shader;
+        ShaderTextured shader;
 
         Camera3D cam;
         public RenderOpenGl3DObject(List<IRenderableGeo> inGeoList, float inFps, int initialWindowWidth, int initialWindowHeight, string initialWindowTitle) : base(initialWindowWidth, initialWindowHeight, initialWindowTitle)
@@ -42,18 +43,12 @@ namespace GameEngine
         }
         uint loadImage(Bitmap image)
         {
-            uint texID = glGenTexture();
-
-
+            texID = glGenTexture();
             glBindTexture(GL_TEXTURE_2D, texID);
-
-            BitmapData data = image.LockBits(new Rectangle(0, 0, image.Width, image.Height),
-                ImageLockMode.ReadOnly, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
-
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 4, 4, 0, GL_BGR, GL_UNSIGNED_BYTE, data.Scan0);
-
+            BitmapData data = image.LockBits(new Rectangle(0, 0, image.Width, image.Height), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image.Width, image.Height, 0, GL_RGB, GL_UNSIGNED_BYTE, data.Scan0);
+            //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);Format32bppArgb
             image.UnlockBits(data);
-
             //quality settings
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
             glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -68,7 +63,7 @@ namespace GameEngine
         {
             Bitmap myBitmap = new Bitmap("GanzenBordPlayField.bmp");
             loadImage(myBitmap);
-            shader = new Shader();
+            shader = new ShaderTextured();
             shader.Load();
             glEnable(GL_DEPTH_TEST);
             vao = glGenVertexArray();
@@ -85,6 +80,7 @@ namespace GameEngine
 
         protected unsafe override void Update()
         {
+            glBindTexture(GL_TEXTURE_2D, texID);
             glBindBuffer(GL_ARRAY_BUFFER, vao);
 
             if (GameTime.isNewFrame) {
@@ -197,11 +193,11 @@ namespace GameEngine
                 glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertices.Length, v, GL_DYNAMIC_DRAW);
             }
 
-            glVertexAttribPointer(0, 3, GL_FLOAT, false, 6 * sizeof(float), (void*)0);// index, 3D positions (x and y), type, not normalized, stride(aantal bytes tot de volgende vertex): 5 X float, vertexes start on: 0(casted to some type of pointer)
+            glVertexAttribPointer(0, 3, GL_FLOAT, false, 5 * sizeof(float), (void*)0);// index, 3D positions (x and y), type, not normalized, stride(aantal bytes tot de volgende vertex): 5 X float, vertexes start on: 0(casted to some type of pointer)
             glEnableVertexAttribArray(0);
             //glVertexAttribPointer(1, 3, GL_FLOAT, false, 6 * sizeof(float), (void*)(3 * sizeof(float))); //index 1, size 3 (3 colorvalues), floats, not normalized, stride(bytes tot volgende lijn), 2 size of float (cast to pointer): first colorvalue starts at...
             //UV version
-            glVertexAttribPointer(1, 3, GL_FLOAT, false, 6 * sizeof(float), (void*)(3 * sizeof(float))); //index 1, size 3 (3 colorvalues), floats, not normalized, stride(bytes tot volgende lijn), 2 size of float (cast to pointer): first colorvalue starts at...
+            glVertexAttribPointer(1, 2, GL_FLOAT, false, 5 * sizeof(float), (void*)(3 * sizeof(float))); //index 1, size 3 (3 colorvalues), floats, not normalized, stride(bytes tot volgende lijn), 2 size of float (cast to pointer): first colorvalue starts at...
 
             glEnableVertexAttribArray(1);
             glBindVertexArray(vao);
@@ -217,6 +213,7 @@ namespace GameEngine
         {
             glClearColor(0.2f, 0.2f, 0.3f, 1);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            glBindTexture(GL_TEXTURE_2D, texID);
             Update();
             Vector3 position = new Vector3(0, 0, -5);
             Vector3 scale = new Vector3(1, 1, 1);
