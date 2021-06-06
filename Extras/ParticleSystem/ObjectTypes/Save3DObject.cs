@@ -9,11 +9,11 @@ namespace GameEngine
 {
     class Save3DObject
     {
-        public static void SaveToCSV(ParticleSystems inParticles, int frameNr, string fileName)
+        public static void SaveToCSV(RenderableGeo inParticles, int frameNr, string fileName)
         {
             writeCsvStreamWriter(inParticles, frameNr, fileName);
         }
-        public static void writeCsvStreamWriter(ParticleSystems inParticles, int frameNr, string fileName)
+        public static void writeCsvStreamWriter(RenderableGeo inParticles, int frameNr, string fileName)
         {
             using (StreamWriter streamWriter = new StreamWriter(fileName + Convert.ToString(frameNr) + ".csv"))
             {

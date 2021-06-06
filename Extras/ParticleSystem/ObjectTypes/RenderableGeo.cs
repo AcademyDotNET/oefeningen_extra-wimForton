@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GameEngine
 {
-    abstract class ParticleSystems : IRenderableGeo
+    abstract class RenderableGeo : IRenderableGeo
     {
         public List<Particle> myParticles { get; set; } = new List<Particle>();
         public Vector Position { get; set; } = new Vector(0, 0, 0);

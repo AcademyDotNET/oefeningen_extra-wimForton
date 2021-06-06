@@ -46,7 +46,7 @@ namespace GameEngine
             texID = glGenTexture();
             glBindTexture(GL_TEXTURE_2D, texID);
             BitmapData data = image.LockBits(new Rectangle(0, 0, image.Width, image.Height), ImageLockMode.ReadOnly, PixelFormat.Format24bppRgb);
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image.Width, image.Height, 0, GL_RGB, GL_UNSIGNED_BYTE, data.Scan0);
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image.Width, image.Height, 0, GL_BGR, GL_UNSIGNED_BYTE, data.Scan0);
             //glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);Format32bppArgb
             image.UnlockBits(data);
             //quality settings
@@ -112,7 +112,7 @@ namespace GameEngine
                     double mouseXmove = mouseXpos - mousePrevXpos;
                     double mouseYmove = mouseYpos - mousePrevYpos;
                     scenePosition = Matrix4x4.CreateTranslation((float)mouseXmove * 0.006f, 0.0f, 0.0f) * scenePosition;
-                    scenePosition = Matrix4x4.CreateTranslation(0.0f, 0.0f, (float)mouseYmove * 0.01f) * scenePosition;
+                    scenePosition = Matrix4x4.CreateTranslation(0.0f, 0.0f, (float)mouseYmove * -0.01f) * scenePosition;
                     mousePrevXpos = mouseXpos;
                     mousePrevYpos = mouseYpos;
                 }
@@ -198,8 +198,8 @@ namespace GameEngine
             //glVertexAttribPointer(1, 3, GL_FLOAT, false, 6 * sizeof(float), (void*)(3 * sizeof(float))); //index 1, size 3 (3 colorvalues), floats, not normalized, stride(bytes tot volgende lijn), 2 size of float (cast to pointer): first colorvalue starts at...
             //UV version
             glVertexAttribPointer(1, 2, GL_FLOAT, false, 5 * sizeof(float), (void*)(3 * sizeof(float))); //index 1, size 3 (3 colorvalues), floats, not normalized, stride(bytes tot volgende lijn), 2 size of float (cast to pointer): first colorvalue starts at...
-
             glEnableVertexAttribArray(1);
+
             glBindVertexArray(vao);
             glDrawArrays(GL_TRIANGLES, 0, vertices.Length * 6); //GL_TRIANGLES
 
@@ -213,7 +213,7 @@ namespace GameEngine
         {
             glClearColor(0.2f, 0.2f, 0.3f, 1);
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-            glBindTexture(GL_TEXTURE_2D, texID);
+            //glBindTexture(GL_TEXTURE_2D, texID);
             Update();
             Vector3 position = new Vector3(0, 0, -5);
             Vector3 scale = new Vector3(1, 1, 1);

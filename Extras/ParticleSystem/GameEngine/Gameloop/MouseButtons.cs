@@ -9,22 +9,16 @@ namespace GameEngine
 {
     class MouseButtons
     {
-        private int keyDown = -1;
-        public int TestKeys(List<InputState> stateList, bool repeat)
+        public int TestKeys(List<InputState> StateList, bool repeat)
         {
             int result = -1;
-            for (int i = 0; i < stateList.Count; i++)
+            for (int i = 0; i < StateList.Count; i++)
             {
-                InputState state = stateList[i];
+                InputState state = StateList[i];
                 if (state == InputState.Press)
                 {
                     result = i;
                 }
-                //if (state == InputState.Release && keyDown == i)
-                //{
-                //    result = -1;
-                //    keyDown = -1;
-                //}
             }
 
             return result;

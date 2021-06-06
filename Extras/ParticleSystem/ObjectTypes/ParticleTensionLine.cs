@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace GameEngine
 {
     
-    class ParticleTensionLine : ParticleSystems, IRenderableGeo
+    class ParticleTensionLine : RenderableGeo, IRenderableGeo
     {
         //public List<Particle> myParticles = new List<Particle>();
         private double Drag { get; set; } = 0.999;

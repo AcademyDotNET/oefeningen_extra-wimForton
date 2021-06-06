@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace GameEngine
 {
-    class UVsquare : ParticleSystems, IRenderableGeo
+    class UVsquare : RenderableGeo, IRenderableGeo
     {
         public List<Vector> myPoints { get; set; } = new List<Vector>();
         public List<Polygon> myPolygons { get; set; } = new List<Polygon>();

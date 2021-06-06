@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace GameEngine
 {
-    class ParticleEmitter: ParticleSystems, IRenderableGeo
+    class ParticleEmitter: RenderableGeo, IRenderableGeo
     {
         private double Gravity { get; set; } = 0;
         private double LifeSpan { get; set; }
