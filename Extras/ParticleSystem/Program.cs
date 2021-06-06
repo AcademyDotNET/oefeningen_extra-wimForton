@@ -20,12 +20,11 @@ namespace GameEngine
             Console.WriteLine(testTorus.myPolygons[0].Normals[1]);
             
             List<IRenderableGeo> myObjects = new List<IRenderableGeo>();
-            //myObjects.Add(new UVsquare());
-            //myObjects.Add(new ParticleEmitter("test", 50, Vector.setNew(0,3,-20),0.1, -0.5, 0.999, true, 2));
+            myObjects.Add(new PolyObjectLoader(@"PionA.obj"));
+            myObjects.Add(new PolyObjectLoader(@"PionB.obj"));
+            myObjects.Add(new PolyObjectLoader(@"PionC.obj"));
+            myObjects.Add(new PolyObjectLoader(@"PionD.obj"));
             myObjects.Add(new PolyObjectLoader(@"GanzenBord.obj"));
-            //myObjects[1].Position.Z = -20;
-            //myObjects[1].UpdateVAO();
-            //myObjects[3].UpdateVAO();
 
             RenderOpenGL testRender = new RenderOpenGl3DObject(myObjects, 30f, 1280, 720, "Ganzenbord 3D");
             testRender.Run();

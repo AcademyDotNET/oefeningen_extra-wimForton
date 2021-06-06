@@ -9,7 +9,7 @@ namespace GameEngine
 {
     class PolyObjectLoader : RenderableGeo, IRenderableGeo
     {
-        public List<Vector> myPoints { get; set; } = new List<Vector>();
+        //public List<Vector> myPoints { get; set; } = new List<Vector>();
         public List<Vector> myUVs { get; set; } = new List<Vector>();
         public bool hasUVs { get; set; } = false;
         public List<Vector> myNormals { get; set; } = new List<Vector>();

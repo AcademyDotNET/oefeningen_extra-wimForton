@@ -8,6 +8,7 @@ namespace GameEngine
 {
     abstract class RenderableGeo : IRenderableGeo
     {
+        public List<Vector> myPoints { get; set; } = new List<Vector>();
         public List<Particle> myParticles { get; set; } = new List<Particle>();
         public Vector Position { get; set; } = new Vector(0, 0, 0);
         public string Name { get; set; } = "Unnamed";

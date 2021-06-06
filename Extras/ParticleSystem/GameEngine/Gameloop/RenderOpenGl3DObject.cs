@@ -25,6 +25,7 @@ namespace GameEngine
         private Game myGame = new Game();
         private ConsoleRenderer myConsoleRenderer = new ConsoleRenderer(90, 60);
         System.Drawing.Image myImage = System.Drawing.Image.FromFile("GanzenBordPlayField.bmp");
+        IRenderableGeo myPlayerPath = new PolyObjectLoader("PlayerPath.obj");
 
 
 
@@ -32,13 +33,27 @@ namespace GameEngine
         List<float> myVaoList = new List<float>();
         float[] vertices;
         ShaderTextured shader;
-
         Camera3D cam;
+
         public RenderOpenGl3DObject(List<IRenderableGeo> inGeoList, float inFps, int initialWindowWidth, int initialWindowHeight, string initialWindowTitle) : base(initialWindowWidth, initialWindowHeight, initialWindowTitle)
         {
             myRendergeo = inGeoList;
             fps = inFps;
+            sceneRotation = Matrix4x4.CreateFromYawPitchRoll(0.0f, 45.0f, 0.0f);
+            scenePosition = Matrix4x4.CreateTranslation(0.0f, 0.0f, -10.0f);
             ///////////////////////////////////////////////ganzenbord
+            for (int i = 0; i < myGame.MyPlayers.Count; i++)
+            {
+                int pathPointNum = myGame.MyPlayers[i].position * (i + 1);//1 repeating path for 4 players
+                myRendergeo[i].Position = myPlayerPath.myPoints[pathPointNum];//+1 otherwise the board plays with
+                myRendergeo[i].UpdateVAO();
+            }
+            myRendergeo[1].UpdateVAO();
+            for (int i = 0; i < myRendergeo.Count; i++)
+            {
+                myRendergeo[i].Update();
+                myVaoList.AddRange(myRendergeo[i].GetVAO());
+            }
             myConsoleRenderer.Render(myGame);
         }
         uint loadImage(Bitmap image)
@@ -70,7 +85,8 @@ namespace GameEngine
             vbo = glGenBuffer();
             glBindVertexArray(vao);
             glBindBuffer(GL_ARRAY_BUFFER, vao);
-
+            myRendergeo[1].Position = myPlayerPath.myPoints[0];
+            myRendergeo[1].UpdateVAO();
 
         }
         protected unsafe override void LoadContent()
@@ -84,12 +100,12 @@ namespace GameEngine
             glBindBuffer(GL_ARRAY_BUFFER, vao);
 
             if (GameTime.isNewFrame) {
-                myVaoList.Clear();
-                for (int i = 0; i < myRendergeo.Count; i++)
-                {
-                    myRendergeo[i].Update();
-                    myVaoList.AddRange(myRendergeo[i].GetVAO());
-                }
+                //myVaoList.Clear();
+                //for (int i = 0; i < myRendergeo.Count; i++)
+                //{
+                //    myRendergeo[i].Update();
+                //    myVaoList.AddRange(myRendergeo[i].GetVAO());
+                //}
                 vertices = myVaoList.ToArray();
                 List<InputState> mouseButtonStateList = new List<InputState>();
                 mouseButtonStateList.Add(Glfw.GetMouseButton(DisplayManager.Window, MouseButton.Left));
@@ -182,8 +198,8 @@ namespace GameEngine
                 if (keyNum == 8 || keyNum == 9)
                 {
                     ///////////////////////////////////////////////ganzenbord
-                    myGame.PlayTurn("");
-                    myConsoleRenderer.Render(myGame);
+                    AdvanceGame();
+
                 }
 
             }
@@ -208,6 +224,24 @@ namespace GameEngine
             glBindVertexArray(0);
             Vector3 cameraposition = new Vector3(DisplayManager.WindowSize.X, DisplayManager.WindowSize.Y, 0);
             cam = new Camera3D(cameraposition / 2f, 1f);
+        }
+        private void AdvanceGame()
+        {
+            myGame.PlayTurn("");
+
+            for (int i = 0; i < myGame.MyPlayers.Count; i++)
+            {
+                int pathPointNum = myGame.MyPlayers[i].position * (i + 1);
+                myRendergeo[i].Position = myPlayerPath.myPoints[pathPointNum];
+                myRendergeo[i].UpdateVAO();
+            }
+            myConsoleRenderer.Render(myGame);
+            myVaoList.Clear();
+            for (int i = 0; i < myRendergeo.Count; i++)
+            {
+                myRendergeo[i].Update();
+                myVaoList.AddRange(myRendergeo[i].GetVAO());
+            }
         }
         protected override void Render()
         {
