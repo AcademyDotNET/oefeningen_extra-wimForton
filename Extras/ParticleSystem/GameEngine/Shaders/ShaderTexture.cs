@@ -45,7 +45,7 @@ namespace GameEngine
                         uniform mat4 projection;
                         uniform mat4 model;
                         uniform mat4 view;
-                        uniform mat4 modelMatrix;
+                        uniform mat4 modelMatrix;                        
  
                         // Values that stay constant for the whole mesh.
                         uniform mat4 MVP; 
@@ -64,6 +64,7 @@ namespace GameEngine
  
                             // Interpolated values from the vertex shaders
                             in vec2 UV; 
+                            uniform vec3 lightPos;
  
                             // Ouput data
                             out vec3 color;                    
@@ -115,6 +116,11 @@ namespace GameEngine
         public void Use()
         {
             glUseProgram(ProgramID);
+        }
+        public void SetVec3(string uniformName, Vector3 vec)
+        {
+            int location = glGetUniformLocation(ProgramID, uniformName);
+            glUniform3f(location, vec.X, vec.Y, vec.Z);
         }
         public void SetMatrix4x4(string uniformName, Matrix4x4 mat)
         {

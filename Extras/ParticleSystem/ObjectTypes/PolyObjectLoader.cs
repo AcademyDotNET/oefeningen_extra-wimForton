@@ -55,6 +55,10 @@ namespace GameEngine
             Vector myUV = myUVs[poly.UVs[inVertexIndex]];
             myVaoList.Add((float)myUV.X);//OpenGL takes only 2 UV coordinates
             myVaoList.Add((float)myUV.Y);
+            Vector myNormal = myNormals[poly.Normals[inVertexIndex]];
+            myVaoList.Add((float)myNormal.X);
+            myVaoList.Add((float)myNormal.Y);
+            myVaoList.Add((float)myNormal.Z);
             //Vector myColor = poly.Colors[inVertexIndex];
             //myVaoList.Add((float)myColor.X);
             //myVaoList.Add((float)myColor.Y);

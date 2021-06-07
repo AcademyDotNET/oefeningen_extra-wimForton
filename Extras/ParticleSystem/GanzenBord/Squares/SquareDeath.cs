@@ -20,7 +20,11 @@ namespace Ganzenbord
         {
             inGame.GameOutput($"Player has arrived at {Name} square", Vector.setNew(0, 1, 1));
             inGame.GameOutput($"Oh damn, you're death and have to start your life over again", Vector.setNew(1, 1, 0));
+            inPlayer.KeyFrames.Add(inPlayer.position);
+            inPlayer.TweenPos.Add(0);
             inPlayer.position = 0;
+            inPlayer.KeyFrames.Add(inPlayer.position);
+            inPlayer.TweenPos.Add(0);
             inPlayer.turnsWaitedAtThisSquare = -1;
             inGame.MyPlayField[inPlayer.position].Actions(inPlayer, inGame);
         }

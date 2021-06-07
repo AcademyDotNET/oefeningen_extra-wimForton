@@ -70,7 +70,7 @@ namespace Ganzenbord
             bool isValid = false;
             string name = "P";
             string avatar = "Default";
-            do
+            do///////////////////////////////////////////////  method maken
             {
                 Console.WriteLine("How Many Players? (Max 4)");
                 isValid = Int32.TryParse(Console.ReadLine(), out howManyPlayers);

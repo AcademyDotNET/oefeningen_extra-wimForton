@@ -32,23 +32,24 @@ namespace GameEngine
         List<IRenderableGeo> myRendergeo = new List<IRenderableGeo>();
         List<float> myVaoList = new List<float>();
         float[] vertices;
-        ShaderTextured shader;
+        ShaderPhong shader;
+
         Camera3D cam;
 
         public RenderOpenGl3DObject(List<IRenderableGeo> inGeoList, float inFps, int initialWindowWidth, int initialWindowHeight, string initialWindowTitle) : base(initialWindowWidth, initialWindowHeight, initialWindowTitle)
         {
             myRendergeo = inGeoList;
             fps = inFps;
-            sceneRotation = Matrix4x4.CreateFromYawPitchRoll(0.0f, 45.0f, 0.0f);
-            scenePosition = Matrix4x4.CreateTranslation(0.0f, 0.0f, -10.0f);
+            sceneRotation = Matrix4x4.CreateFromYawPitchRoll(0.0f, 0.5f, 0.0f);
+            scenePosition = Matrix4x4.CreateTranslation(0.0f, 0.0f, -7.0f);
             ///////////////////////////////////////////////ganzenbord
             for (int i = 0; i < myGame.MyPlayers.Count; i++)
             {
-                int pathPointNum = myGame.MyPlayers[i].position * (i + 1);//1 repeating path for 4 players
-                myRendergeo[i].Position = myPlayerPath.myPoints[pathPointNum];//+1 otherwise the board plays with
+                int pathPointNum = i * 64;
+                myRendergeo[i].Position = myPlayerPath.myPoints[pathPointNum];
                 myRendergeo[i].UpdateVAO();
             }
-            myRendergeo[1].UpdateVAO();
+
             for (int i = 0; i < myRendergeo.Count; i++)
             {
                 myRendergeo[i].Update();
@@ -78,7 +79,7 @@ namespace GameEngine
         {
             Bitmap myBitmap = new Bitmap("GanzenBordPlayField.bmp");
             loadImage(myBitmap);
-            shader = new ShaderTextured();
+            shader = new ShaderPhong();
             shader.Load();
             glEnable(GL_DEPTH_TEST);
             vao = glGenVertexArray();
@@ -106,6 +107,7 @@ namespace GameEngine
                 //    myRendergeo[i].Update();
                 //    myVaoList.AddRange(myRendergeo[i].GetVAO());
                 //}
+                sceneRotation = Matrix4x4.CreateFromYawPitchRoll(0.001f, 0.0f, 0.0f) * sceneRotation;
                 vertices = myVaoList.ToArray();
                 List<InputState> mouseButtonStateList = new List<InputState>();
                 mouseButtonStateList.Add(Glfw.GetMouseButton(DisplayManager.Window, MouseButton.Left));
@@ -201,6 +203,7 @@ namespace GameEngine
                     AdvanceGame();
 
                 }
+                UpdateGame();
 
             }
             
@@ -208,13 +211,15 @@ namespace GameEngine
             {
                 glBufferData(GL_ARRAY_BUFFER, sizeof(float) * vertices.Length, v, GL_DYNAMIC_DRAW);
             }
-
-            glVertexAttribPointer(0, 3, GL_FLOAT, false, 5 * sizeof(float), (void*)0);// index, 3D positions (x and y), type, not normalized, stride(aantal bytes tot de volgende vertex): 5 X float, vertexes start on: 0(casted to some type of pointer)
+            //pointer location of Vertices
+            glVertexAttribPointer(0, 3, GL_FLOAT, false, 8 * sizeof(float), (void*)0);// index, 3D positions (x and y), type, not normalized, stride(aantal bytes tot de volgende vertex): 5 X float, vertexes start on: 0(casted to some type of pointer)
             glEnableVertexAttribArray(0);
-            //glVertexAttribPointer(1, 3, GL_FLOAT, false, 6 * sizeof(float), (void*)(3 * sizeof(float))); //index 1, size 3 (3 colorvalues), floats, not normalized, stride(bytes tot volgende lijn), 2 size of float (cast to pointer): first colorvalue starts at...
-            //UV version
-            glVertexAttribPointer(1, 2, GL_FLOAT, false, 5 * sizeof(float), (void*)(3 * sizeof(float))); //index 1, size 3 (3 colorvalues), floats, not normalized, stride(bytes tot volgende lijn), 2 size of float (cast to pointer): first colorvalue starts at...
+            //pointer location of UVs
+            glVertexAttribPointer(1, 2, GL_FLOAT, false, 8 * sizeof(float), (void*)(3 * sizeof(float))); //index 1, size 3 (3 colorvalues), floats, not normalized, stride(bytes tot volgende lijn), 2 size of float (cast to pointer): first colorvalue starts at...
             glEnableVertexAttribArray(1);
+            //pointer location of Normals
+            glVertexAttribPointer(2, 3, GL_FLOAT, false, 8 * sizeof(float), (void*)(5 * sizeof(float))); //index 1, size 3 (3 colorvalues), floats, not normalized, stride(bytes tot volgende lijn), 2 size of float (cast to pointer): first colorvalue starts at...
+            glEnableVertexAttribArray(2);
 
             glBindVertexArray(vao);
             glDrawArrays(GL_TRIANGLES, 0, vertices.Length * 6); //GL_TRIANGLES
@@ -228,14 +233,64 @@ namespace GameEngine
         private void AdvanceGame()
         {
             myGame.PlayTurn("");
-
+            myConsoleRenderer.Render(myGame);///interface
+            //for (int i = 0; i < myGame.MyPlayers.Count; i++)
+            //{
+            //    int pathPointNum = myGame.MyPlayers[i].position + i * 64;
+            //    myRendergeo[i].Position = myPlayerPath.myPoints[pathPointNum];
+            //    myRendergeo[i].UpdateVAO();
+            //}
+            //myConsoleRenderer.Render(myGame);///interface
+            //myVaoList.Clear();
+            //for (int i = 0; i < myRendergeo.Count; i++)
+            //{
+            //    myRendergeo[i].Update();
+            //    myVaoList.AddRange(myRendergeo[i].GetVAO());
+            //}
+        }
+        private void UpdateGame()
+        {
             for (int i = 0; i < myGame.MyPlayers.Count; i++)
             {
-                int pathPointNum = myGame.MyPlayers[i].position * (i + 1);
-                myRendergeo[i].Position = myPlayerPath.myPoints[pathPointNum];
-                myRendergeo[i].UpdateVAO();
+                int KeyframeCount = myGame.MyPlayers[i].KeyFrames.Count;
+                if (KeyframeCount > 1)
+                {
+                    double tween = myGame.MyPlayers[i].TweenPos[0];
+                    int pathPointNum1 = myGame.MyPlayers[i].KeyFrames[0] + i * 64;
+                    int pathPointNum2 = myGame.MyPlayers[i].KeyFrames[1] + i * 64;
+                    double tweenPathpointNum = MyMath.Lerp((double)pathPointNum1, (double)pathPointNum2, tween);
+                    Vector keyPos1 = myPlayerPath.myPoints[(int)Math.Floor(tweenPathpointNum)];
+                    Vector keyPos2 = myPlayerPath.myPoints[(int)Math.Ceiling(tweenPathpointNum)];
+                    myRendergeo[i].Position = Vector.Lerp(keyPos1, keyPos2, tweenPathpointNum%1);
+                    myGame.MyPlayers[i].TweenPos[0] += 0.02;
+                    myRendergeo[i].UpdateVAO();
+                    //double tween = myGame.MyPlayers[i].TweenPos[KeyframeCount - 1];
+                    //int pathPointNum1 = myGame.MyPlayers[i].KeyFrames[KeyframeCount - 1] + i * 64;
+                    //int pathPointNum2 = myGame.MyPlayers[i].KeyFrames[KeyframeCount - 2] + i * 64;
+                    //Vector keyPos1 = myPlayerPath.myPoints[pathPointNum1];
+                    //Vector keyPos2 = myPlayerPath.myPoints[pathPointNum2];
+                    //myRendergeo[i].Position = Vector.Lerp(keyPos1, keyPos2, tween);
+                    //myGame.MyPlayers[i].TweenPos[KeyframeCount - 1] += 0.05;
+                    //myRendergeo[i].UpdateVAO();
+                    if (tween >= 1)
+                    {
+                        myGame.MyPlayers[i].KeyFrames.RemoveAt(0);
+                        myGame.MyPlayers[i].TweenPos.RemoveAt(0);
+                    }
+                }
+                else
+                {
+                    myGame.MyPlayers[i].KeyFrames.Clear();
+                    myGame.MyPlayers[i].TweenPos.Clear();
+                }
+
+                //int pathPointNum = myGame.MyPlayers[i].position + i * 64;
+                //myRendergeo[i].Position = myPlayerPath.myPoints[pathPointNum];
+                //myRendergeo[i].UpdateVAO();
+                //int pathPointNum = myGame.MyPlayers[i].position + i * 64;
+                //myRendergeo[i].Position = myPlayerPath.myPoints[pathPointNum];
+                //myRendergeo[i].UpdateVAO();
             }
-            myConsoleRenderer.Render(myGame);
             myVaoList.Clear();
             for (int i = 0; i < myRendergeo.Count; i++)
             {
@@ -256,7 +311,19 @@ namespace GameEngine
             Matrix4x4 trans = Matrix4x4.CreateTranslation(position.X, position.Y, position.Z);
             Matrix4x4 sca = Matrix4x4.CreateScale(scale.X, scale.Y, scale.Z);
             Matrix4x4 rot = Matrix4x4.CreateRotationY(MathF.PI * 2);
-
+            //shader.("lightPos", );
+            //uniform vec3 lightPos;
+            //uniform vec3 viewPos;
+            //uniform vec3 lightColor;
+            //uniform vec3 objectColor;
+            Vector3 lightPos = new Vector3(5.0f, 5.0f, 5.0f);
+            Vector3 viewPos = new Vector3(5.0f, 5.0f, 5.0f);
+            Vector3 lightColor = new Vector3(1.0f, 1.0f, 1.0f);
+            Vector3 objectColor = new Vector3(1.0f, 1.0f, 1.0f);
+            shader.SetVec3("lightPos", lightPos);
+            shader.SetVec3("viewPos", viewPos);
+            shader.SetVec3("lightColor", lightColor);
+            shader.SetVec3("objectColor", objectColor);
             shader.SetMatrix4x4("view", sceneRotation * scenePosition);
             shader.Use();
             shader.SetMatrix4x4("projection", rot * cam.GetProjectionMatrix());

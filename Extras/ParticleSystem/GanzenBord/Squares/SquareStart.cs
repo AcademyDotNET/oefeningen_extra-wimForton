@@ -22,11 +22,15 @@ namespace Ganzenbord
                 if (inPlayer.Dice[0] == 5 && inPlayer.Dice[1] == 4 || inPlayer.Dice[0] == 4 && inPlayer.Dice[1] == 5)
                 {
                     inPlayer.position = 26;
+                    inPlayer.KeyFrames.Add(26);
+                    inPlayer.TweenPos.Add(0);
                     inGame.GameOutput($"Player {inPlayer.Name} has thrown {inPlayer.Dice[0]} and {inPlayer.Dice[1]} and the rules say {inPlayer.Name} moves to position {inPlayer.position}, {inGame.MyPlayField[inPlayer.position].Name}", Vector.setNew(0, 1, 1));
                 }
                 else if (inPlayer.Dice[0] == 6 && inPlayer.Dice[1] == 3 || inPlayer.Dice[0] == 3 && inPlayer.Dice[1] == 6)
                 {
                     inPlayer.position = 53;
+                    inPlayer.KeyFrames.Add(53);
+                    inPlayer.TweenPos.Add(0);
                     inGame.GameOutput($"Player {inPlayer.Name} has thrown {inPlayer.Dice[0]} and {inPlayer.Dice[1]} and the rules say {inPlayer.Name} moves to position {inPlayer.position}, {inGame.MyPlayField[inPlayer.position].Name}", Vector.setNew(0, 1, 1));
                 }
                 else

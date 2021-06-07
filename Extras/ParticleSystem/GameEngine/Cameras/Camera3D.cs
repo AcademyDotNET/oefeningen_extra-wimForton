@@ -18,7 +18,7 @@ namespace GameEngine
         }
         public Matrix4x4 GetProjectionMatrix()
         {
-            Matrix4x4 perspectiveMatrix = Matrix4x4.CreatePerspectiveFieldOfView(0.5f, 1.2f, 0.1f, 100f);
+            Matrix4x4 perspectiveMatrix = Matrix4x4.CreatePerspectiveFieldOfView(0.5f, 1.77f, 0.1f, 100f);
             return perspectiveMatrix;
         }
 

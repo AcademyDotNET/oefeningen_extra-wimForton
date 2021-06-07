@@ -19,7 +19,11 @@ namespace Ganzenbord
         {
             inGame.GameOutput($"Player has arrived at {Name} square", Vector.setNew(0, 1, 1));
             inGame.GameOutput($"Is this the way out? Oh no it's place 39, could have been worse...", Vector.setNew(1, 1, 0));
+            inPlayer.KeyFrames.Add(inPlayer.position);
+            inPlayer.TweenPos.Add(0);
             inPlayer.position = 39;
+            inPlayer.KeyFrames.Add(39);
+            inPlayer.TweenPos.Add(0);
             inPlayer.turnsWaitedAtThisSquare = 0;
             inGame.MyPlayField[inPlayer.position].Actions(inPlayer, inGame);
         }

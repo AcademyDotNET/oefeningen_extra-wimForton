@@ -20,10 +20,13 @@ namespace GameEngine
         {
             vertexCode = @"#version 330 core
                             layout (location = 0) in vec3 aPosition;
-                            layout (location = 1) in vec3 aPosition;
+                            layout(location = 1) in vec2 vertexUV; 
+                            layout (location = 2) in vec3 aNormal;
 
                             out vec3 FragPos;
+                            out vec2 UV;
                             out vec3 Normal;
+
 
                             uniform mat4 model;
                             uniform mat4 view;
@@ -32,29 +35,36 @@ namespace GameEngine
                             void main()
                             {
                                 FragPos = vec3(model * vec4(aPosition, 1.0));
-                                Normal = vec3(model * vec4(aPosition, 1.0));
-                                gl_Position = projection * vec4(aPosition, 1.0);
+                                Normal = aNormal;
+                                UV = vertexUV;
+                                gl_Position = projection * view * vec4(aPosition, 1.0);
+                                //gl_Position = projection * vec4(aPosition, 1.0);
                                 //gl_Position = projection * vec4(FragPos, 1.0);
 
                             }";
 
-            fragmentCode =  @"#version 330 core
+            fragmentCode = @"#version 330 core
                             out vec4 FragColor;
 
                             in vec3 Normal;  
                             in vec3 FragPos;  
-  
+                            in vec2 UV;
                             uniform vec3 lightPos; 
                             uniform vec3 viewPos; 
                             uniform vec3 lightColor;
                             uniform vec3 objectColor;
 
+                            uniform sampler2D myTextureSampler; 
+
                             void main()
                             {
+                                //textureColor
+                                vec3 texColor = texture( myTextureSampler, UV ).rgb;   
+
                                 // ambient
-                                float ambientStrength = 0.1;
-                                vec3 ambient = ambientStrength * lightColor;
-  	
+                                float ambientStrength = 0.5;
+                                vec3 ambient = ambientStrength * texColor;
+
                                 // diffuse 
                                 vec3 norm = normalize(Normal);
                                 vec3 lightDir = normalize(lightPos - FragPos);
@@ -68,7 +78,7 @@ namespace GameEngine
                                 float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
                                 vec3 specular = specularStrength * spec * lightColor;  
         
-                                vec3 result = (ambient + diffuse + specular) * objectColor;
+                                vec3 result = (ambient + diffuse + specular) * objectColor * texColor;
                                 FragColor = vec4(result, 1.0);
                             }";
         }
@@ -119,7 +129,11 @@ namespace GameEngine
             int location = glGetUniformLocation(ProgramID, uniformName);
             glUniformMatrix4fv(location, 1, false, GetMatrix4x4Values(mat));
         }
-
+        public void SetVec3(string uniformName, Vector3 vec)
+        {
+            int location = glGetUniformLocation(ProgramID, uniformName);
+            glUniform3f(location, vec.X, vec.Y, vec.Z);
+        }
         private float[] GetMatrix4x4Values(Matrix4x4 m)
         {
             return new float[]

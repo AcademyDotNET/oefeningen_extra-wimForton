@@ -8,7 +8,7 @@ namespace GameEngine
 {
     class MyMath
     {
-        private static double Lerp(double a, double b, double weight)
+        public static double Lerp(double a, double b, double weight)
         {
             double result = a * (1 - weight) + b * weight;
 
