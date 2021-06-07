@@ -32,14 +32,16 @@ namespace GameEngine
                 //something went wrong
             }
             //Glfw.SetWindowOpacity(Window, 0.2f);///Zbrush style :-)
+            /*
             Rectangle screen = Glfw.PrimaryMonitor.WorkArea;//Rectangle - using System.Drawing
             int x = (screen.Width - width) / 2;
             int y = (screen.Height - height) / 2;
             Glfw.SetWindowPosition(Window, x, y);
+            */
             Glfw.MakeContextCurrent(Window);
             Import(Glfw.GetProcAddress);
             glViewport(0,0,width,height);
-            Glfw.SwapInterval(0); //VSync is off 1 is on
+            Glfw.SwapInterval(1); //VSync is off 1 is on
         }
         public static void CloseWindow()
         {

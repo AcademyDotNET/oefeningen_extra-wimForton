@@ -86,9 +86,6 @@ namespace GameEngine
             vbo = glGenBuffer();
             glBindVertexArray(vao);
             glBindBuffer(GL_ARRAY_BUFFER, vao);
-            myRendergeo[1].Position = myPlayerPath.myPoints[0];
-            myRendergeo[1].UpdateVAO();
-
         }
         protected unsafe override void LoadContent()
         {            
@@ -234,19 +231,6 @@ namespace GameEngine
         {
             myGame.PlayTurn("");
             myConsoleRenderer.Render(myGame);///interface
-            //for (int i = 0; i < myGame.MyPlayers.Count; i++)
-            //{
-            //    int pathPointNum = myGame.MyPlayers[i].position + i * 64;
-            //    myRendergeo[i].Position = myPlayerPath.myPoints[pathPointNum];
-            //    myRendergeo[i].UpdateVAO();
-            //}
-            //myConsoleRenderer.Render(myGame);///interface
-            //myVaoList.Clear();
-            //for (int i = 0; i < myRendergeo.Count; i++)
-            //{
-            //    myRendergeo[i].Update();
-            //    myVaoList.AddRange(myRendergeo[i].GetVAO());
-            //}
         }
         private void UpdateGame()
         {
@@ -255,7 +239,8 @@ namespace GameEngine
                 int KeyframeCount = myGame.MyPlayers[i].KeyFrames.Count;
                 if (KeyframeCount > 1)
                 {
-                    double tween = myGame.MyPlayers[i].TweenPos[0];
+                    double tween = Math.Clamp(myGame.MyPlayers[i].TweenPos[0], 0, 1);
+
                     int pathPointNum1 = myGame.MyPlayers[i].KeyFrames[0] + i * 64;
                     int pathPointNum2 = myGame.MyPlayers[i].KeyFrames[1] + i * 64;
                     double tweenPathpointNum = MyMath.Lerp((double)pathPointNum1, (double)pathPointNum2, tween);
@@ -264,14 +249,6 @@ namespace GameEngine
                     myRendergeo[i].Position = Vector.Lerp(keyPos1, keyPos2, tweenPathpointNum%1);
                     myGame.MyPlayers[i].TweenPos[0] += 0.02;
                     myRendergeo[i].UpdateVAO();
-                    //double tween = myGame.MyPlayers[i].TweenPos[KeyframeCount - 1];
-                    //int pathPointNum1 = myGame.MyPlayers[i].KeyFrames[KeyframeCount - 1] + i * 64;
-                    //int pathPointNum2 = myGame.MyPlayers[i].KeyFrames[KeyframeCount - 2] + i * 64;
-                    //Vector keyPos1 = myPlayerPath.myPoints[pathPointNum1];
-                    //Vector keyPos2 = myPlayerPath.myPoints[pathPointNum2];
-                    //myRendergeo[i].Position = Vector.Lerp(keyPos1, keyPos2, tween);
-                    //myGame.MyPlayers[i].TweenPos[KeyframeCount - 1] += 0.05;
-                    //myRendergeo[i].UpdateVAO();
                     if (tween >= 1)
                     {
                         myGame.MyPlayers[i].KeyFrames.RemoveAt(0);
@@ -311,11 +288,7 @@ namespace GameEngine
             Matrix4x4 trans = Matrix4x4.CreateTranslation(position.X, position.Y, position.Z);
             Matrix4x4 sca = Matrix4x4.CreateScale(scale.X, scale.Y, scale.Z);
             Matrix4x4 rot = Matrix4x4.CreateRotationY(MathF.PI * 2);
-            //shader.("lightPos", );
-            //uniform vec3 lightPos;
-            //uniform vec3 viewPos;
-            //uniform vec3 lightColor;
-            //uniform vec3 objectColor;
+
             Vector3 lightPos = new Vector3(5.0f, 5.0f, 5.0f);
             Vector3 viewPos = new Vector3(5.0f, 5.0f, 5.0f);
             Vector3 lightColor = new Vector3(1.0f, 1.0f, 1.0f);
