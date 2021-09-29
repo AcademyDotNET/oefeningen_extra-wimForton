@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "7/x5bV7eWcCSzNEkYLzzukZf+/mnqND8lfxnfrcW2/KiQX8zI+kmn3gWw3uQJCDyelQwDVwPDfdIRmg8HW/tmA==",
+  "success": true,
+  "projectFilePath": "H:\\cursus_informatica\\extras\\Extras\\ParticleSystem\\OpenGLproject.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\wim\\.nuget\\packages\\microsoft.netcore.platforms\\5.0.0\\microsoft.netcore.platforms.5.0.0.nupkg.sha512",
+    "C:\\Users\\wim\\.nuget\\packages\\microsoft.win32.systemevents\\5.0.0\\microsoft.win32.systemevents.5.0.0.nupkg.sha512",
+    "C:\\Users\\wim\\.nuget\\packages\\system.drawing.common\\5.0.2\\system.drawing.common.5.0.2.nupkg.sha512"
+  ],
+  "logs": []
+}
